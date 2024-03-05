@@ -16,7 +16,6 @@ class Calculator : ComponentActivity() {
         var dbHelper:DBHelper =  DBHelper(this);
         val database = dbHelper.writableDatabase
         val contentValues = ContentValues()
-
         setContent {
             Creat(viewModel)
         }
