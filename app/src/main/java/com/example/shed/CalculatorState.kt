@@ -1,15 +1,24 @@
 package com.example.shed
 
+import android.database.sqlite.SQLiteDatabase
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.platform.LocalContext
+
 
 data class CalculatorState(
     var numbers: MutableList<IManageItem> = mutableListOf()
 )
-class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> by mutableListOf(){
+open class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> by mutableListOf(){
     var onActionChange: (str:String) -> Unit = ::change
     var showtxt=showtxt_
-    fun change(str:String){
+
+
+    open fun change(str:String){
+        if (str==""){
         showtxt.value=this.GetStringList()
+        }
+        else{showtxt.value=str}
+
     }
     fun addtoList(action: CalculatorAction){
         when(action){
@@ -65,7 +74,7 @@ class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> by mut
     fun GetStringList():String {
         var str:String=""
         for (i in 0..<this.count()){
-            if (i%2==1){//оператор
+            if (this[i] is ItemOper){//оператор
                 str+=(this[i] as ItemOper).oper.symbol
             }
             else{
@@ -91,6 +100,7 @@ class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> by mut
         }
     }
     fun Calculate() {
+
     this.HighPrioraCalc()
     var sum: Double = ((this[0] as ItemNumber).num).toDouble()
     var len: Int = 0
@@ -104,9 +114,20 @@ class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> by mut
         var t2: Double = (this[i + 1] as ItemNumber).num.toDouble()
         sum = (this[i] as ItemOper).oper.Calc(t1, t2)
     }
-    showtxt.value = sum.toString()
+    //showtxt.value = sum.toString()
+    onActionChange(sum.toString())
     this.clear()
     this.AddSymbol(CalculatorAction.ActionSymbol(sum.toString()))
    }
+}
+class ListCalcDB(showtxt_: MutableState<String>,val db: DatabaseHelper) : ListCalc(showtxt_) {
+    init {
+          db.getData(this)
+          super.change("")
+    }
+    override fun change(str:String){
+        super.change(str)
+        db.saveData(this)
+    }
 }
 
