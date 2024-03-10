@@ -120,7 +120,7 @@ open class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> b
     this.AddSymbol(CalculatorAction.ActionSymbol(sum.toString()))
    }
 }
-class ListCalcDB(showtxt_: MutableState<String>,val db: DatabaseHelper) : ListCalc(showtxt_) {
+class ListCalcDB(showtxt_: MutableState<String>,val db: IRepository) : ListCalc(showtxt_) {
     init {
           db.getData(this)
           super.change("")

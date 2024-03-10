@@ -16,7 +16,7 @@ class CalculatorViewModel(application:Application): AndroidViewModel(application
 
     var state by mutableStateOf(CalculatorState())
     var showtext:MutableState<String> = mutableStateOf("")
-    var db= DatabaseHelper(application)
+    var db:IRepository= DatabaseHelper(application)
     var ListCalcDB :ListCalcDB=ListCalcDB(showtext,db)
 
     fun onAction(action: CalculatorAction) {

@@ -12,14 +12,14 @@ import com.example.shed.ListCalc
 import com.example.shed.ListCalcDB
 
 
-class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DatabaseHelper(context: Context) : IRepository, SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
 
     }
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         onCreate(db)
     }
-    fun getData(lst: ListCalc)  {
+    override fun getData(lst:ListCalcDB)  {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM " + "DataCalc", null)
         val valueColumnIndex=cursor.getColumnIndex("Value")
@@ -39,7 +39,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             }
         }
     }
-    fun saveData( lst:ListCalcDB) {
+    override fun saveData( lst:ListCalcDB) {
         val db = this.writableDatabase
         val sqlCREATEDataCalc= """
             CREATE TABLE IF NOT EXISTS  DataCalc (
@@ -71,5 +71,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val KEY_ID = "id"
         private const val KEY_EXPRESSION = "expression"
     }
+
+
 }
 
