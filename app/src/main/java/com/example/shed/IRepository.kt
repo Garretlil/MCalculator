@@ -1,6 +1,6 @@
 package com.example.shed
 
 interface IRepository {
-    fun getData(lst:ListCalcDB)
-    fun saveData(lst:ListCalcDB)
+    fun getData(lst: ListCalc)
+    fun saveData(lst: ListCalc)
 }

@@ -1,15 +1,8 @@
 package com.example.shed
 
-import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.shed.CalculatorAction
-import com.example.shed.EnumOperation
-import com.example.shed.ItemNumber
-import com.example.shed.ItemOper
-import com.example.shed.ListCalc
-import com.example.shed.ListCalcDB
 
 
 class DatabaseHelper(context: Context) : IRepository, SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -19,7 +12,7 @@ class DatabaseHelper(context: Context) : IRepository, SQLiteOpenHelper(context, 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         onCreate(db)
     }
-    override fun getData(lst:ListCalcDB)  {
+    override fun getData(lst: ListCalc)  {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM " + "DataCalc", null)
         val valueColumnIndex=cursor.getColumnIndex("Value")
@@ -39,7 +32,7 @@ class DatabaseHelper(context: Context) : IRepository, SQLiteOpenHelper(context, 
             }
         }
     }
-    override fun saveData( lst:ListCalcDB) {
+    override fun saveData(lst: ListCalc) {
         val db = this.writableDatabase
         val sqlCREATEDataCalc= """
             CREATE TABLE IF NOT EXISTS  DataCalc (

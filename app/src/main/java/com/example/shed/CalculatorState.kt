@@ -1,8 +1,6 @@
 package com.example.shed
 
-import android.database.sqlite.SQLiteDatabase
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.platform.LocalContext
 
 
 data class CalculatorState(
@@ -120,14 +118,15 @@ open class ListCalc(showtxt_: MutableState<String> ) :MutableList<IManageItem> b
     this.AddSymbol(CalculatorAction.ActionSymbol(sum.toString()))
    }
 }
-class ListCalcDB(showtxt_: MutableState<String>,val db: IRepository) : ListCalc(showtxt_) {
+class ListCalcDBRF(showtxt_: MutableState<String>,val dataProvider: IRepository) : ListCalc(showtxt_) {
     init {
-          db.getData(this)
+        dataProvider.getData(this)
           super.change("")
     }
     override fun change(str:String){
         super.change(str)
-        db.saveData(this)
+        dataProvider.saveData(this)
     }
 }
+
 

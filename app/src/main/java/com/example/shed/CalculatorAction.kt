@@ -14,6 +14,7 @@ open class EnumCalculation(){ // создаем объекты с одной п�
 
 open class EnumOperation(val symbol:String){
     open var priority:Int=0
+
    fun getOper(): EnumOperation
    {
         return  when (symbol) {
@@ -21,11 +22,18 @@ open class EnumOperation(val symbol:String){
            "-" ->  Minus
            "*" ->  Multiply
            "/" ->  Divide
-           else -> return Plus
+           else -> return nonOper
        }
    }
     open fun Calc(num1:Double, num2:Double):Double {
         return 0.0
+    }
+
+    object nonOper:EnumOperation(""){
+        override var priority=0
+        override fun Calc(num1:Double,num2:Double):Double{
+            return 0.0
+        }
     }
     object Plus:EnumOperation("+"){
          override var priority=0
